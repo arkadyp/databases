@@ -26,6 +26,18 @@ var handleRequest = function(request, response) {
   var url = require('url').parse(request.url);
   console.log(url);
 
+  if (request.method === "POST"){
+    var msg = "";
+    request.on('data', function (data) {
+      msg += data;
+    });
+    request.on('end', function() {
+      msg = JSON.parse(msg);
+      msg.createdAt = new Date();
+      msg.updatedAt = new Date();
+      testResponse.results.push(msg);
+    })
+  }
 
   var statusCode = 200;
 
