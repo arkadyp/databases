@@ -84,7 +84,7 @@ var getUniqueRooms = function(data) {
 
 $(document).ready(function(){
   refreshMessages();
-  setInterval(refreshMessages, 100000);
+  setInterval(refreshMessages, 1000);
 
 
   $('#composeMsgButton').on('click', function(event) {
@@ -112,7 +112,7 @@ $(document).ready(function(){
     }
 
     $usermessage.val('');
-    sendMessages('https://api.parse.com/1/classes/chatterbox', message);
+    sendMessages('http://127.0.0.1:8080/1/classes/chatterbox/', message);
   });
 
   $('#chooseRoom').on('change', function(){
