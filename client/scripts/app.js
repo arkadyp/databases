@@ -5,6 +5,7 @@ var displayMessages = function(url){
     type: 'GET',
     contentType: 'application/json',
     success: function (data) {
+      data = JSON.parse(data);
       appendMessage(data);
       getUniqueRooms(data);
     },
@@ -59,7 +60,7 @@ var appendMessage = function(data) {
 };
 
 var refreshMessages = function(){
-  var url = 'https://api.parse.com/1/classes/chatterbox/?order=-createdAt&limit=500';
+  var url = 'http://127.0.0.1:8080/1/classes/chatterbox/?order=-createdAt&limit=500';
   var room = $('#chooseRoom').val();
   if(room !== 'All Rooms') {
     url += '&where={"roomname":"'+room+'"}';
@@ -83,7 +84,7 @@ var getUniqueRooms = function(data) {
 
 $(document).ready(function(){
   refreshMessages();
-  setInterval(refreshMessages, 1000);
+  setInterval(refreshMessages, 100000);
 
 
   $('#composeMsgButton').on('click', function(event) {
