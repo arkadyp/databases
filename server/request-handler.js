@@ -6,16 +6,11 @@
  * *Hint* Check out the node module documentation at http://nodejs.org/api/modules.html. */
 
 var _ = require('underscore');
+var fs = require('fs');
 
-var storage = {"results":
-  [
-    {"username":"pinky_pie","text":"Oh, gosh. Node is sooOOoo hard!","roomname":"nodejs","createdAt":"2014-01-27T20:27:40.528Z","updatedAt":"2014-01-27T20:27:40.528Z","objectId":"ltH2Va7xKe"},
-    {"username":"bv","text":"Nothing life the smell of node in the morning ","roomname":"nodejs","createdAt":"2014-01-27T20:18:58.670Z","updatedAt":"2014-01-27T20:18:58.670Z","objectId":"e1T2TkeKCg"},
-    {"username":"bv","text":"...","roomname":"main","createdAt":"2014-01-27T20:01:08.511Z","updatedAt":"2014-01-27T20:01:08.511Z","objectId":"6bTN1V0Dnp"},
-    // {"username":"aut","text":"hiya","roomname":"main","createdAt":"2014-01-27T19:57:55.977Z","updatedAt":"2014-01-27T19:57:55.977Z","objectId":"QA9OcXO3cq"},
-    // {"username":"David","text":"tesstststs","roomname":"heeeeeeeeeeelp","createdAt":"2014-01-27T19:56:17.881Z","updatedAt":"2014-01-27T19:56:17.881Z","objectId":"vrA125C5BU"},
-  ]
-};
+var msgs = fs.readFileSync('storage.txt', 'utf8');
+msgs = '[' + msgs + ']';
+var storage = {"results": JSON.parse(msgs)};
 
 var handleRequest = function(request, response) {
   /* the 'request' argument comes from nodes http module. It includes info about the
