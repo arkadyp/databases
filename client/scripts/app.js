@@ -60,7 +60,7 @@ var appendMessage = function(data) {
 };
 
 var refreshMessages = function(){
-  var url = 'http://127.0.0.1:8080/1/classes/chatterbox/?order=-createdAt&limit=500';
+  var url = 'http://127.0.0.1:8080/classes';
   var room = $('#chooseRoom').val();
   if(room !== 'All Rooms') {
     url += '&where={"roomname":"'+room+'"}';
@@ -84,7 +84,7 @@ var getUniqueRooms = function(data) {
 
 $(document).ready(function(){
   refreshMessages();
-  setInterval(refreshMessages, 1000);
+  setInterval(refreshMessages, 3000);
 
 
   $('#composeMsgButton').on('click', function(event) {
@@ -112,7 +112,7 @@ $(document).ready(function(){
     }
 
     $usermessage.val('');
-    sendMessages('http://127.0.0.1:8080/1/classes/chatterbox/', message);
+    sendMessages('http://127.0.0.1:8080/classes/send', message);
   });
 
   $('#chooseRoom').on('change', function(){
