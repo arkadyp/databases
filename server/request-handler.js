@@ -9,6 +9,9 @@ var _ = require('underscore');
 var fs = require('fs');
 
 var msgs = fs.readFileSync('storage.txt', 'utf8');
+if(msgs[0] === ',') { //remove leading comma
+  msgs = msgs.slice(1);
+}
 msgs = '[' + msgs + ']';
 var storage = {"results": JSON.parse(msgs)};
 
@@ -33,9 +36,7 @@ var handleRequest = function(request, response) {
     if('where' in options) {
       var roomname = JSON.parse(options.where).roomname;
       var messages = {};
-      console.log(roomname);
       messages.results = _.filter(storage.results, function(message){
-        console.log(message.roomname);
         if(message.roomname === roomname) {
           return message;
         }
@@ -62,6 +63,9 @@ var handleRequest = function(request, response) {
         msg.createdAt = new Date();
         msg.updatedAt = new Date();
         storage.results.unshift(msg);
+        fs.appendFile('storage.txt', ',' + JSON.stringify(msg),'utf8', function(){
+          console.log("Storage updated with: ", JSON.stringify(msg));
+        });
         endResponse(201);
       })
     } else if(request.method === 'GET'){
