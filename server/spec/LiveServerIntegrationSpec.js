@@ -2,7 +2,7 @@ var request = require("request");
 
 describe("Live Node Chat Server", function() {
  it("Should respond to get requests for /log", function(done) {
-   request("http://127.0.0.1:8080/classes/messages",
+   request("http://127.0.0.1:8080/classes/messages/log",
            function(error, response, body) {
              var messageLog = JSON.parse(body);
              messageLog = messageLog.results;
@@ -13,7 +13,7 @@ describe("Live Node Chat Server", function() {
 
  it("Should accept posts to /send", function(done) {
    request({method: "POST",
-            uri: "http://127.0.0.1:8080/classes/messages",
+            uri: "http://127.0.0.1:8080/classes/messages/send",
             json: {username: "Jono",
                message: "Do my bidding!"}
             },
@@ -21,7 +21,7 @@ describe("Live Node Chat Server", function() {
              expect(response.statusCode).toEqual(201);
              // Now if we request the log, that message
              // we posted should be there:
-             request("http://127.0.0.1:8080/classes/messages",
+             request("http://127.0.0.1:8080/classes/messages/log",
                      function(error, response, body) {
                        var messageLog = JSON.parse(body);
                        messageLog = messageLog.results;
