@@ -45,12 +45,14 @@ describe("Node Server Request Listener Function", function() {
    handler.handleRequest(req, res);
 
    expect(res._responseCode).toEqual(200);
-   expect(res._data).toEqual("[]");
+   res._data = JSON.parse(res._data);
+   res._data = res._data.results;
+   expect(JSON.stringify(res._data)).toEqual("[]");
    expect(res._ended).toEqual(true);
  });
 
  it("Should accept posts to /classes/room", function() {
-   var req = new StubRequest("http://127.0.0.1:8080/classes/room1",
+   var req = new StubRequest("http://127.0.0.1:8080/classes/room1/send",
                              "POST",
                             {username: "Jono",
                              message: "Do my bidding!"});
@@ -75,7 +77,8 @@ describe("Node Server Request Listener Function", function() {
    handler.handleRequest(req, res);
 
    expect(res._responseCode).toEqual(200);
-   var messageLog = JSON.parse(res._data);
+   res._data = JSON.parse(res._data);
+   var messageLog = res._data.results;
    expect(messageLog.length).toEqual(1);
    expect(messageLog[0].username).toEqual("Jono");
    expect(messageLog[0].message).toEqual("Do my bidding!");
