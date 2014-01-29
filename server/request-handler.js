@@ -34,6 +34,13 @@ var handleRequest = function(request, response) {
     response.end(JSON.stringify(messages));
   };
 
+  var serveIndex = function() {
+    var headers = defaultCorsHeaders;
+    headers['Content-Type'] = "text/html";
+    response.writeHead(200, headers);
+    response.end(fs.readFileSync('client/index.html'));
+  };
+
   var buildCustomMessages = function(options) {
     var messages = {};
 
