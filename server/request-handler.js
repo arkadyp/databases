@@ -1,10 +1,3 @@
-/* You should implement your request handler function in this file.
- * And hey! This is already getting passed to http.createServer()
- * in basic-server.js. But it won't work as is.
- * You'll have to figure out a way to export this function from
- * this file and include it in basic-server.js so that it actually works.
- * *Hint* Check out the node module documentation at http://nodejs.org/api/modules.html. */
-
 var _ = require('underscore');
 var fs = require('fs');
 
@@ -18,13 +11,6 @@ msgs = '[' + msgs + ']';
 var storage = {"results": JSON.parse(msgs)};
 
 var handleRequest = function(request, response) {
-  /* the 'request' argument comes from nodes http module. It includes info about the
-  request - such as what URL the browser is requesting. */
-
-  /* Documentation for both request and response can be found at
-   * http://nodemanual.org/0.8.14/nodejs_ref_guide/http.html */
-
-  // console.log("Serving request type " + request.method + " for url " + request.url);
 
   var endResponse = function(statusCode, messages) {
     messages = messages || storage;
@@ -32,13 +18,6 @@ var handleRequest = function(request, response) {
     headers['Content-Type'] = "text/plain";
     response.writeHead(statusCode, headers);
     response.end(JSON.stringify(messages));
-  };
-
-  var serveIndex = function() {
-    var headers = defaultCorsHeaders;
-    headers['Content-Type'] = "text/html";
-    response.writeHead(200, headers);
-    response.end(fs.readFileSync('client/index.html'));
   };
 
   var buildCustomMessages = function(options) {
@@ -100,7 +79,6 @@ var handleRequest = function(request, response) {
       })
     } else if(request.method === 'GET'){
       var reqOptions = require('querystring').parse(url.path);
-      // console.log(reqOptions);
       var messages = buildCustomMessages(reqOptions);
       endResponse(200, messages);
     } else {

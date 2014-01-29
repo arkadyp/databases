@@ -5,6 +5,7 @@ var displayMessages = function(url){
     type: 'GET',
     contentType: 'application/json',
     success: function (data) {
+      console.log(data);
       data = JSON.parse(data);
       appendMessage(data);
       getUniqueRooms(data);
