@@ -9,10 +9,12 @@ var _ = require('underscore');
 var fs = require('fs');
 
 var msgs = fs.readFileSync('storage.txt', 'utf8');
+
 if(msgs[0] === ',') { //remove leading comma
   msgs = msgs.slice(1);
 }
 msgs = '[' + msgs + ']';
+
 var storage = {"results": JSON.parse(msgs)};
 
 var handleRequest = function(request, response) {
@@ -33,24 +35,45 @@ var handleRequest = function(request, response) {
   };
 
   var buildCustomMessages = function(options) {
+    var messages = {};
+
+    //filter by roomname
+    console.log(options);
     if('where' in options) {
       var roomname = JSON.parse(options.where).roomname;
-      var messages = {};
       messages.results = _.filter(storage.results, function(message){
         if(message.roomname === roomname) {
           return message;
         }
       });
-      return messages;
+    } else {
+      messages.results = storage.results.slice(0);
     }
+
+    //order by
+    if(options.order === '-createdAt') {
+      messages.results.sort(function(a,b) {
+        a = new Date(a.createdAt);
+        b = new Date(b.createdAt);
+        return b - a;
+      });
+    }
+
+    // console.log(options.limit);
+    if (options.limit){
+      messages.results = messages.results.slice(0, options.limit);
+    }
+
+    return messages;
   }
 
   var url = require('url').parse(request.url);
+
   var urlParse = require('url').parse(request.url, true, true);
+
   if(url.path.slice(0, 8) !== '/classes'){
     endResponse(404);
   } else {
-    console.log(request.method);
     if(request.method === 'OPTIONS') {
       endResponse(200);
     } else if (request.method === "POST" && url.path.slice(url.path.length - 5, url.path.length) === '/send'){
@@ -70,6 +93,7 @@ var handleRequest = function(request, response) {
       })
     } else if(request.method === 'GET'){
       var reqOptions = require('querystring').parse(url.path);
+      // console.log(reqOptions);
       var messages = buildCustomMessages(reqOptions);
       endResponse(200, messages);
     } else {
