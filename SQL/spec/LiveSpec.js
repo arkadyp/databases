@@ -18,7 +18,6 @@ describe("Persistent Node Chat Server", function() {
     dbConnection.connect();
 
     var tablename = "messages"; // todo: fill this out
-
     /* Empty the db table before each test so that multiple tests
      * (or repeated runs of the tests) won't screw each other up: */
     dbConnection.query("DELETE FROM " + tablename, done);

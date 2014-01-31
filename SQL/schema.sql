@@ -91,4 +91,3 @@ ALTER TABLE `friends` ADD FOREIGN KEY (id_users) REFERENCES `users` (`id`);
 -- ('','','');
 -- INSERT INTO `rooms` (`id`,`roomname`) VALUES
 -- ('','');
-
