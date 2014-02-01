@@ -13,7 +13,7 @@ describe("Persistent Node Chat Server", function() {
       user: "root",
     /* and password. */
       password: "",
-      database: "blackopps"
+      database: "blackopps2"
     });
     dbConnection.connect();
 

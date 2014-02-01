@@ -8,7 +8,7 @@ exports.createDBConnection = function(){
   dbConnection = mysql.createConnection({
     user: "root",
     password: "",
-    database: "blackopps"
+    database: "blackopps2"
   });
   dbConnection.connect();
 };
