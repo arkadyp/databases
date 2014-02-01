@@ -6,26 +6,35 @@ var url = require('url');
 
 var buildQueryString = function(req){
   var options = require('querystring').parse(req.url);
+  var responseStr = "select b.username, a.text, c.roomname from messages a inner join users b on a.id_users = b.id inner join rooms c on c.id = a.id_rooms;";
 
-var responseStr = "select b.username, a.text, c.roomname from messages a inner join users b on a.id_users = b.id inner join rooms c on c.id = a.id_rooms;";
-
-if(options.where) {
-  options.where = JSON.parse(options.where);
-  console.log(options.where);
-  if(options.where.roomname) {
-    responseStr = responseStr.substring(0, responseStr.length - 1); //slice off semi colon
-    responseStr += " and c.roomname = \"" + options.where.roomname + "\";";
+  if(options.where) {
+    options.where = JSON.parse(options.where);
+    console.log(options.where);
+    if(options.where.roomname) {
+      responseStr = responseStr.substring(0, responseStr.length - 1); //slice off semi colon
+      responseStr += " and c.roomname = \"" + options.where.roomname + "\";";
+    }
   }
-}
 
-// if (options.where && JSON.stringify(options.where).roomname){
-//   responseStr = responseStr.substring(0, str.length - 1); //slice off semi colon
-//   responseStr += " and c.roomname = " + options.where.roomname + ";";
-// }
+  if (options.order === "-createdAt"){
+    responseStr = responseStr.substring(0, responseStr.length - 1); //slice off semi colon
+    responseStr += " order by a.created_at desc;";
+  }
+
+  if (options.limit){
+    responseStr = responseStr.substring(0, responseStr.length - 1); //slice off semi colon
+    responseStr += " LIMIT 0, " + options.limit + ";";
+  }
 
 console.log(responseStr);
 return responseStr;
 
+// { '/classes/': '',
+//   order: '-createdAt',
+//   limit: '15',
+//   where: '{"roomname":"room2"}' }
+// */
 
   // if (options.where.roomname){
     // SELECT * FROM #temp LIMIT 0, ????

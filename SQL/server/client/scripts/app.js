@@ -61,7 +61,7 @@ var appendMessage = function(data) {
 };
 
 var refreshMessages = function(){
-  var url = 'http://127.0.0.1:8080/classes/&order=-createdAt&limit=15';
+  var url = 'http://127.0.0.1:8080/classes/&order=-createdAt&limit=100';
   var room = $('#chooseRoom').val();
   if(room !== 'All Rooms') {
     url += '&where={"roomname":"'+room+'"}';
