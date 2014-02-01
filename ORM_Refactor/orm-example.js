@@ -4,14 +4,14 @@
  */
 
 var Sequelize = require("sequelize");
-var sequelize = new Sequelize("chat", "bacon", "pass");
+var sequelize = new Sequelize("blackopps3", "root", null);
 /* TODO this constructor takes the database name, username, then password.
  * Modify the arguments if you need to */
 
 /* first define the data structure by giving property names and datatypes
  * See http://sequelizejs.com for other datatypes you can use besides STRING. */
 var User = sequelize.define('User', {
-  user_name: Sequelize.STRING,
+  user_name: Sequelize.STRING
 });
 
 /* .sync() makes Sequelize create the database table for us if it doesn't
@@ -34,3 +34,4 @@ User.sync().success(function() {
     });
   });
 });
+
