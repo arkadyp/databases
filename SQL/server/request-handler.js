@@ -14,7 +14,14 @@ var messages = [
 ];
 
 var getAll = function(request, response) {
-  console.log('get attempt');
+  var querystring = "select a.username, b.text\
+                     from users a\
+                     left join messages b\
+                     on a.id = b.id_users;";
+  database.queryDB(querystring, function(err, data){
+    if(err) { throw err; }
+    console.log(data);
+  });
   helpers.sendResponse(response, null);
 };
 
@@ -38,7 +45,6 @@ module.exports = function(request, response) {
   var method = methods[request.method];
   method ? method(request, response) : helpers.sendResponse(response, null, 404);
 };
-
 
 
 
