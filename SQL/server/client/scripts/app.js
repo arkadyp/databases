@@ -126,7 +126,7 @@ $(document).ready(function(){
       $(this).text('Save New Room');
     } else {
       var roomname = $('#txtNewRoom').val();
-      if(roomname !== '') {
+      if(roomname !== '' && !(roomname in rooms)) {
         $('#chooseRoom').append('<option selected>'+roomname+'</option>');
       }
       $('#addNewRoomBody').hide('slide');
