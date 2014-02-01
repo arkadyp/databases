@@ -14,15 +14,12 @@ var messages = [
 ];
 
 var getAll = function(request, response) {
-  var querystring = "select a.username, b.text\
-                     from users a\
-                     left join messages b\
-                     on a.id = b.id_users;";
+  console.log('GET attempt');
+  var querystring = "select a.username, b.text from users a left join messages b on a.id = b.id_users;";
   database.queryDB(querystring, function(err, data){
     if(err) { throw err; }
-    console.log(data);
+    helpers.sendResponse(response, {'results': data}, 200);
   });
-  helpers.sendResponse(response, null);
 };
 
 var createMessage = function(request, response) {
