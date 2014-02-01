@@ -1,3 +1,7 @@
+
+
+
+
 -- ---
 -- Globals
 -- ---
@@ -32,7 +36,8 @@ CREATE TABLE `users` (
   `id` TINYINT NULL AUTO_INCREMENT DEFAULT NULL,
   `username` VARCHAR(20) NULL DEFAULT NULL,
   `created_at` DATETIME NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY (`username`)
 );
 
 -- ---
@@ -59,7 +64,8 @@ DROP TABLE IF EXISTS `rooms`;
 CREATE TABLE `rooms` (
   `id` TINYINT NULL AUTO_INCREMENT DEFAULT NULL,
   `roomname` VARCHAR(20) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY (`roomname`)
 );
 
 -- ---
@@ -91,3 +97,4 @@ ALTER TABLE `friends` ADD FOREIGN KEY (id_users) REFERENCES `users` (`id`);
 -- ('','','');
 -- INSERT INTO `rooms` (`id`,`roomname`) VALUES
 -- ('','');
+
