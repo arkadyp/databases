@@ -2,45 +2,102 @@ var _ = require('underscore');
 var fs = require('fs');
 var helpers = require('./http-helpers');
 var database = require('./database');
+var url = require('url');
 
-var objectId = 1;
+var buildQueryString = function(req){
+  var options = require('querystring').parse(req.url);
 
-var messages = [
-  {
-    username: 'bob',
-    text: 'hello world',
-    objectId: objectId
+var responseStr = "select b.username, a.text, c.roomname from messages a inner join users b on a.id_users = b.id inner join rooms c on c.id = a.id_rooms;";
+
+if(options.where) {
+  options.where = JSON.parse(options.where);
+  console.log(options.where);
+  if(options.where.roomname) {
+    responseStr = responseStr.substring(0, responseStr.length - 1); //slice off semi colon
+    responseStr += " and c.roomname = \"" + options.where.roomname + "\";";
   }
-];
+}
 
-var getAll = function(request, response) {
+// if (options.where && JSON.stringify(options.where).roomname){
+//   responseStr = responseStr.substring(0, str.length - 1); //slice off semi colon
+//   responseStr += " and c.roomname = " + options.where.roomname + ";";
+// }
+
+console.log(responseStr);
+return responseStr;
+
+
+  // if (options.where.roomname){
+    // SELECT * FROM #temp LIMIT 0, ????
+  // }
+
+/*
+select b.username, a.text, c.roomname 
+from messages a 
+left join users b 
+on a.id_users = b.id 
+left join rooms c 
+on c.id = a.id_rooms;";
+*/
+
+
+/*
+select a.username, b.text
+into #temp
+from users a
+left join messages b
+  on a.id = b.id_users
+  1.) and roomname = 
+  2.) order by _______
+
+select *
+from #temp
+limit 0, ?????
+*/
+
+  //check for room
+
+  //check limit
+
+  //check order
+/*
+{ '/classes/': '',
+  order: '-createdAt',
+  limit: '15',
+  where: '{"roomname":"room2"}' }
+*/
+  // var responseStr = ";";
+  // return responseStr;
+};
+
+var getMessages = function(req, response) {
   console.log('GET attempt');
-  var querystring = "select a.username, b.text from users a left join messages b on a.id = b.id_users;";
+  var querystring = buildQueryString(req);
   database.queryDB(querystring, function(err, data){
     if(err) { throw err; }
     helpers.sendResponse(response, {'results': data}, 200);
   });
 };
 
-var createMessage = function(request, response) {
+var createMessage = function(req, response) {
   console.log('post attempt');
   helpers.sendResponse(response, null);
 };
 
-var corsOptions = function(request, response) {
+var corsOptions = function(req, response) {
   console.log('OPTIONS attempt');
   helpers.sendResponse(response, null);
 };
 
 var methods = {
-  'GET': getAll,
+  'GET': getMessages,
   'POST': createMessage,
   'OPTIONS': corsOptions
 };
 
-module.exports = function(request, response) {
-  var method = methods[request.method];
-  method ? method(request, response) : helpers.sendResponse(response, null, 404);
+module.exports = function(req, response) {
+  var method = methods[req.method];
+  method ? method(req, response) : helpers.sendResponse(response, null, 404);
 };
 
 

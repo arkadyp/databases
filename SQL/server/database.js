@@ -25,3 +25,4 @@ exports.closeDBConnection = function(){
     dbConnection.end();
   }
 };
+
