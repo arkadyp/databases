@@ -49,11 +49,34 @@ var buildPostQueryString = function(message, cb){
     });
   };
 
-  var continueQuery = function(){
+  var lookupRoomId = function(cb){
     database.queryDB("select distinct id from rooms where roomname = \"" + message.roomname + "\";", function(err, rows, fields){
-      roomId = rows[0].id;
+      if(rows[0]) {
+        roomId = rows[0].id;
+      }
+      cb();
+    });
+  };
+
+  var createNewRoom = function(roomname, cb){
+    database.queryDB("insert into rooms (roomname) values ('" + roomname + "')", function(){
+        lookupRoomId(cb);
+    });
+  };
+
+  var continueQuery = function(){
+    lookupRoomId(function(){
+      if(!roomId) {
+        createNewRoom(message.roomname, endQuery);
+      } else {
+        endQuery();
+      }
+    });
+  };
+
+  var endQuery = function() {
+    database.queryDB('insert into messages (id_users, id_rooms, text, created_at) values (' + userId + ',' + roomId + ',\"' + message.text + '\", now());', function(){
       console.log("user: " + userId + " and room: " + roomId);
-      cb('insert into messages (id_users, id_rooms, text, created_at) values (' + userId + ',' + roomId + ',\"' + message.text + '\", now());');
     });
   };
 
