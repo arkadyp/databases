@@ -69,23 +69,17 @@ var refreshMessages = function(){
   displayMessages(url);
 };
 
-var rooms = {"da club": 'da club', "hackreactor": 'hackreactor', '1': 1};
+var rooms = {};
 var getUniqueRooms = function(data) {
-  // _.each(data.results, function(message) {
-  //   if(!(message.roomname in rooms)) {
-  //     rooms[message.roomname] = message.roomname;
-  //     var $room = $('<option></option>');
-  //     $room.text(message.roomname);
-  //     $('#chooseRoom').append($room);
-  //   }
-  // });
-
-  for(room in rooms) {
-    var $room = $('<option></option>');
-    $room.text(rooms[room]);
-    $('#chooseRoom').append($room);
-  }
-  return rooms;
+  console.log(data);
+  _.each(data.results, function(message) {
+    if(!(message.roomname in rooms)) {
+      rooms[message.roomname] = message.roomname;
+      var $room = $('<option></option>');
+      $room.text(message.roomname);
+      $('#chooseRoom').append($room);
+    }
+  });
 };
 
 $(document).ready(function(){
