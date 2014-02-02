@@ -30,6 +30,7 @@ var server = http.createServer(function(req,res){
         res.end('<html><head><link rel="stylesheet" href="/styles/styles.css"></head><body style="text-align: center"><h1>IDIOT</h1></body></html>');
       }
     };
+    
     router(req,res);
   }
   handler.handleRequest(req, res);
